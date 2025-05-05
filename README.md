@@ -6,9 +6,9 @@
     - View on local http://localhost:3000
 
 ## Timeline
-    - 1/5/2025 2pm commit
+    - 1/5/2025 2pm
         - Create basic framework with empty static plot
-    - 1/5/2025 5pm commit
+    - 1/5/2025 5pm
         - Add superconducting and trapped ion data points to json file
             - System size, Error tolerance, connectivity density
         - Create axes, etc. for plot
