@@ -1,0 +1,129 @@
+[
+    {
+      "type": "superconducting",
+      "year": 2006,
+      "systemSize": 2,
+      "errorTolerance": 0.15,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2009,
+      "systemSize": 2.1,
+      "errorTolerance": 0.03,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2012,
+      "systemSize": 2.1,
+      "errorTolerance": 0.002,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2014,
+      "systemSize": 5.1,
+      "errorTolerance": 0.002,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2018,
+      "systemSize": 17,
+      "errorTolerance": 0.025,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2019,
+      "systemSize": 47,
+      "errorTolerance": 0.0025,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2020,
+      "systemSize": 43,
+      "errorTolerance": 0.025,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2020,
+      "systemSize": 41,
+      "errorTolerance": 0.008,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2022,
+      "systemSize": 280,
+      "errorTolerance": 0.006,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "superconducting",
+      "year": 2024,
+      "systemSize": 340,
+      "errorTolerance": 0.0018,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2003,
+      "systemSize": 2,
+      "errorTolerance": 0.2,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2005,
+      "systemSize": 5,
+      "errorTolerance": 0.21,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2015,
+      "systemSize": 2,
+      "errorTolerance": 0.0009,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2016,
+      "systemSize": 8,
+      "errorTolerance": 0.025,
+      "connectivityDensity": 3
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2019,
+      "systemSize": 16,
+      "errorTolerance": 0.02,
+      "connectivityDensity": 5
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2020,
+      "systemSize": 5,
+      "errorTolerance": 0.002,
+      "connectivityDensity": 4
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2023,
+      "systemSize": 38,
+      "errorTolerance": 0.001,
+      "connectivityDensity": 5
+    },
+    {
+      "type": "trapped-ion",
+      "year": 2025,
+      "systemSize": 100,
+      "errorTolerance": 0.0005,
+      "connectivityDensity": 5
+    }
+  ]
+  
