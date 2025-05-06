@@ -5,19 +5,13 @@ import { Group } from "@visx/group";
 import { Circle } from "@visx/shape";
 import data from "../data/qpu-data.json";
 
-function Plot() {
+function Plot({ showSuperconducting, showTrappedIon }) {
   const width = 500;
   const height = 500;
   const margin = { top: 50, right: 50, bottom: 100, left: 100 };
 
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
-
-  const fillColor = (type) =>
-    type === "superconducting" ? "#a6c8e0" : "#ffd1a6";
-
-  const strokeColor = (type) =>
-    type === "superconducting" ? "#1f77b4" : "#cc5500";
 
   const xScale = scaleLog({
     domain: [1, 100000],
@@ -59,6 +53,9 @@ function Plot() {
     return `10${powerStr}`;
   };
 
+  let superconductingIndex = 0;
+  let trappedIonIndex = 0;
+
   return (
     <svg width={width} height={height} style={{ border: "2px dashed #ccc" }}>
       <Group top={margin.top} left={margin.left}>
@@ -73,11 +70,11 @@ function Plot() {
           tickLabelProps={(tick) => ({
             fontSize: 14,
             dx: tick === 1 ? -3 : -8,
-            dy: 5
+            dy: 5,
           })}
           labelProps={{
             fontSize: 16,
-            dy: 10
+            dy: 10,
           }}
           tickFormat={tickFormatter}
         />
@@ -92,44 +89,70 @@ function Plot() {
           tickLabelProps={(tick) => ({
             fontSize: 14,
             dx: tick === 1 ? -17 : -27,
-            dy: 5
+            dy: 5,
           })}
           labelProps={{
             fontSize: 16,
-            dx: -10
+            dx: -10,
           }}
           tickFormat={tickFormatter}
         />
 
         {/* Data points */}
-        {data.map((d, i) =>
-          d.type === "superconducting" ? (
-            // Render superconducting as squares
+        {data.map((d, i) => {
+          const isVisible =
+            (d.type === "superconducting" && showSuperconducting) ||
+            (d.type === "trapped-ion" && showTrappedIon);
+
+          const opacity = isVisible ? 0.8 : 0;
+
+          const fill = d.type === "superconducting" ? "#82b6f9" : "#ffc266";
+          const stroke = d.type === "superconducting" ? "#0d3d99" : "#cc6600";
+
+          let delay = "0s";
+          if (isVisible) {
+            if (d.type === "superconducting") {
+              delay = `${superconductingIndex * 0.1}s`;
+              superconductingIndex++;
+            } else if (d.type === "trapped-ion") {
+              delay = `${trappedIonIndex * 0.1}s`;
+              trappedIonIndex++;
+            }
+          }
+
+          return d.type === "superconducting" ? (
             <rect
               key={i}
               x={xScale(d.systemSize) - d.connectivityDensity * 3}
               y={yScale(d.errorTolerance) - d.connectivityDensity * 3}
-              width={d.connectivityDensity * 5}
-              height={d.connectivityDensity * 5}
-              fill={fillColor(d.type)}
-              stroke={strokeColor(d.type)}
-              strokeWidth={3}
-              opacity={0.8}
+              width={d.connectivityDensity * 6}
+              height={d.connectivityDensity * 6}
+              fill={fill}
+              stroke={stroke}
+              strokeWidth={1.5}
+              opacity={opacity}
+              style={{
+                transition: "opacity 0.8s ease",
+                transitionDelay: delay,
+              }}
             />
           ) : (
-            // Render trapped-ion as circles
             <Circle
               key={i}
               cx={xScale(d.systemSize)}
               cy={yScale(d.errorTolerance)}
               r={d.connectivityDensity * 3}
-              fill={fillColor(d.type)}
-              stroke={strokeColor(d.type)}
-              strokeWidth={3}
-              opacity={0.8}
+              fill={fill}
+              stroke={stroke}
+              strokeWidth={1.5}
+              opacity={opacity}
+              style={{
+                transition: "opacity 0.8s ease",
+                transitionDelay: delay,
+              }}
             />
-          )
-        )}
+          );
+        })}
       </Group>
     </svg>
   );

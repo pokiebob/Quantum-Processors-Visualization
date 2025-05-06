@@ -8,6 +8,10 @@ import { InView } from 'react-intersection-observer';
 function App() {
   const [showPlot, setShowPlot] = React.useState(false);
 
+  // Points visibility state
+  const [superconductingInView, setSuperconductingInView] = React.useState(false);
+  const [trappedIonInView, setTrappedIonInView] = React.useState(false);
+
   return (
     <main>
       <Title />
@@ -16,7 +20,6 @@ function App() {
         <Intro />
       </section>
 
-      {/* Intersection Observer triggers, add fade later */}
       <InView
         as="div"
         onChange={(inView) => setShowPlot(inView)}
@@ -26,10 +29,16 @@ function App() {
           {showPlot && (
             <div>
               <div className="plot-fixed">
-                <Plot />
+                <Plot
+                  showSuperconducting={superconductingInView}
+                  showTrappedIon={trappedIonInView}
+                />
               </div>
               <div className="scrolling-text">
-                <TextBox />
+                <TextBox
+                  setShowSuperconducting={setSuperconductingInView}
+                  setShowTrappedIon={setTrappedIonInView}
+                />
               </div>
             </div>
           )}

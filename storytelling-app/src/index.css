@@ -5,8 +5,8 @@ body {
 
 .section {
   min-height: 30vh;
-  display: flex;
   padding: 2rem;
+  display: flex; 
 }
 
 .intro {
@@ -17,9 +17,10 @@ body {
   justify-content: center;
 }
 
+
 .plot-fixed {
   position: fixed;
-  top: 50%; 
+  top: 45%; 
   left: 75%;
   transform: translate(-50%, -50%);
   width: 40vw; 
@@ -31,10 +32,13 @@ body {
 }
 
 .scrolling-text {
+  position: relative;
   width: 30vw;
   margin-left: 5vw;
   margin-top: 50vh;
 }
+
+
 
 
 header {

@@ -13,10 +13,12 @@
             - System size, Error tolerance, connectivity density
         - Create axes, etc. for plot
         - Temporarily add all points to plot, with size, color and shape
+    - 1/5/2025 9pm
+        - Create separate textboxes for superconducting and trapped ion
+        - Sync data points with scrollama for each textbox (note: using scrollama instead of inview)
     
     To Do
-    - Create separate textboxes for superconducting and trapped ion
-        - Sync data points with inview for each textbox 
+    
     - Write up intro and text boxes
     - Introduce smooth transitions
         - Fades 
