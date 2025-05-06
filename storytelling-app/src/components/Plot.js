@@ -3,11 +3,16 @@ import { scaleLog } from "@visx/scale";
 import { AxisLeft, AxisBottom } from "@visx/axis";
 import { Group } from "@visx/group";
 import { Circle } from "@visx/shape";
+import { useTooltip, useTooltipInPortal, defaultStyles } from "@visx/tooltip";
 import data from "../data/qpu-data.json";
 
 function Plot({ showSuperconducting, showTrappedIon }) {
-  const width = 500;
-  const height = 500;
+  // Responsive sizing for mobile
+  const isMobile = window.innerWidth <= 768;
+
+  const width = isMobile ? 400 : 500;
+  const height = isMobile ? 300 : 400;
+
   const margin = { top: 50, right: 50, bottom: 100, left: 100 };
 
   const plotWidth = width - margin.left - margin.right;
@@ -20,7 +25,7 @@ function Plot({ showSuperconducting, showTrappedIon }) {
   });
 
   const yScale = scaleLog({
-    domain: [1, 0.00001],
+    domain: [1, 0.0001],
     range: [plotHeight, 0],
     base: 10,
   });
@@ -56,8 +61,26 @@ function Plot({ showSuperconducting, showTrappedIon }) {
   let superconductingIndex = 0;
   let trappedIonIndex = 0;
 
+  const {
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    tooltipOpen,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip();
+
+  const { containerRef, TooltipInPortal } = useTooltipInPortal({
+    scroll: true,
+  });
+
   return (
-    <svg width={width} height={height} style={{ border: "2px dashed #ccc" }}>
+    <svg
+      ref={containerRef}
+      width={width}
+      height={height}
+      style={{ border: "2px dashed #ccc" }}
+    >
       <Group top={margin.top} left={margin.left}>
         <AxisBottom
           scale={xScale}
@@ -75,14 +98,15 @@ function Plot({ showSuperconducting, showTrappedIon }) {
           labelProps={{
             fontSize: 16,
             dy: 10,
+            dx: -30,
           }}
           tickFormat={tickFormatter}
         />
 
         <AxisLeft
           scale={yScale}
-          label="Average two-qubit gate error rate"
-          tickValues={[1, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
+          label="Error Tolerance"
+          tickValues={[1, 0.1, 0.01, 0.001, 0.0001]}
           tickLength={3}
           stroke="#000"
           tickStroke="#000"
@@ -112,10 +136,10 @@ function Plot({ showSuperconducting, showTrappedIon }) {
           let delay = "0s";
           if (isVisible) {
             if (d.type === "superconducting") {
-              delay = `${superconductingIndex * 0.1}s`;
+              delay = `${superconductingIndex * 0.2}s`;
               superconductingIndex++;
             } else if (d.type === "trapped-ion") {
-              delay = `${trappedIonIndex * 0.1}s`;
+              delay = `${trappedIonIndex * 0.2}s`;
               trappedIonIndex++;
             }
           }
@@ -134,6 +158,17 @@ function Plot({ showSuperconducting, showTrappedIon }) {
               style={{
                 transition: "opacity 0.8s ease",
                 transitionDelay: delay,
+                pointerEvents: isVisible ? "all" : "none",
+              }}
+              onMouseEnter={() => {
+                showTooltip({
+                  tooltipLeft: xScale(d.systemSize) + 40,
+                  tooltipTop: yScale(d.errorTolerance) + 50,
+                  tooltipData: d.year,
+                });
+              }}
+              onMouseLeave={() => {
+                hideTooltip();
               }}
             />
           ) : (
@@ -149,11 +184,60 @@ function Plot({ showSuperconducting, showTrappedIon }) {
               style={{
                 transition: "opacity 0.8s ease",
                 transitionDelay: delay,
+                pointerEvents: isVisible ? "all" : "none",
+              }}
+              onMouseEnter={() => {
+                showTooltip({
+                  tooltipLeft: xScale(d.systemSize) + 40,
+                  tooltipTop: yScale(d.errorTolerance) + 50,
+                  tooltipData: d.year,
+                });
+              }}
+              onMouseLeave={() => {
+                hideTooltip();
               }}
             />
           );
         })}
+
+        {/* Legend inside the plot */}
+        <Group top={plotHeight + 60} left={isMobile ? 170 : 280}>
+          <rect
+            x={0}
+            y={0}
+            width={12}
+            height={12}
+            fill="#82b6f9"
+            stroke="#0d3d99"
+            strokeWidth={1.5}
+          />
+          <text x={20} y={10} fontSize={12} fill="#000">
+            Superconducting
+          </text>
+          
+          <Circle
+            cx={6}
+            cy={25}
+            r={6}
+            fill="#ffc266"
+            stroke="#cc6600"
+            strokeWidth={1.5}
+          />
+          <text x={20} y={30} fontSize={12} fill="#000">
+            Trapped-ion
+          </text>
+        </Group>
+
       </Group>
+      {tooltipOpen && (
+        <TooltipInPortal
+          top={tooltipTop}
+          left={tooltipLeft}
+          style={defaultStyles}
+        >
+          {tooltipData}
+        </TooltipInPortal>
+      )}
     </svg>
   );
 }

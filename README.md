@@ -16,15 +16,13 @@
     - 1/5/2025 9pm
         - Create separate textboxes for superconducting and trapped ion
         - Sync data points with scrollama for each textbox (note: using scrollama instead of inview)
-    
+    - 1/6/2025 6pm
+        - Write up intro and text boxes
+        - Introduce smooth transitions
+        - Ensure basic mobile compatibility
+
     To Do
-    
-    - Write up intro and text boxes
-    - Introduce smooth transitions
-        - Fades 
-        - Modify opacity of data points depending on text box to reduce clutter
-    - Ensure mobile compatibility
-    
+
     Bonus if time permits
     - Illustrate "the gap"
         - dotted arcs
