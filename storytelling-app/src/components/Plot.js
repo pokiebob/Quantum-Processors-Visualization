@@ -6,30 +6,32 @@ import { Circle } from "@visx/shape";
 import { useTooltip, useTooltipInPortal, defaultStyles } from "@visx/tooltip";
 import data from "../data/qpu-data.json";
 
-function Plot({ showSuperconducting, showTrappedIon }) {
+function Plot({ showSuperconducting, showTrappedIon, showAlgorithm }) {
   // Responsive sizing for mobile
   const isMobile = window.innerWidth <= 768;
-
   const width = isMobile ? 400 : 500;
   const height = isMobile ? 300 : 400;
 
-  const margin = { top: 50, right: 50, bottom: 100, left: 100 };
-
+  // Set up SVG dimensions and margins
+  const margin = { top: 100, right: 100, bottom: 100, left: 100 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
 
+
+  // D3 scaling
   const xScale = scaleLog({
     domain: [1, 100000],
     range: [0, plotWidth],
     base: 10,
   });
-
   const yScale = scaleLog({
     domain: [1, 0.0001],
     range: [plotHeight, 0],
     base: 10,
   });
 
+
+  // Custom tick formatter for logarithmic scale
   const tickFormatter = (tick) => {
     if (tick === 1) return "1";
     if (tick === 10) return "10";
@@ -58,9 +60,11 @@ function Plot({ showSuperconducting, showTrappedIon }) {
     return `10${powerStr}`;
   };
 
+  // Indeces for animation delays
   let superconductingIndex = 0;
   let trappedIonIndex = 0;
 
+  // Tooltip setup
   const {
     tooltipData,
     tooltipLeft,
@@ -75,17 +79,18 @@ function Plot({ showSuperconducting, showTrappedIon }) {
   });
 
   return (
+    // SVG container
     <svg
       ref={containerRef}
       width={width}
       height={height}
-      style={{ border: "2px dashed #ccc" }}
     >
       <Group top={margin.top} left={margin.left}>
+        {/* X and Y axes */}
         <AxisBottom
           scale={xScale}
           top={plotHeight}
-          label="Number of physical qubits"
+          label="Number of qubits"
           tickValues={[1, 10, 100, 1000, 10000, 100000]}
           tickLength={3}
           stroke="#000"
@@ -126,12 +131,24 @@ function Plot({ showSuperconducting, showTrappedIon }) {
         {data.map((d, i) => {
           const isVisible =
             (d.type === "superconducting" && showSuperconducting) ||
-            (d.type === "trapped-ion" && showTrappedIon);
+            (d.type === "trapped-ion" && showTrappedIon) ||
+            (d.type === "algorithm" && showAlgorithm);
 
           const opacity = isVisible ? 0.8 : 0;
 
-          const fill = d.type === "superconducting" ? "#82b6f9" : "#ffc266";
-          const stroke = d.type === "superconducting" ? "#0d3d99" : "#cc6600";
+          const fill =
+            d.type === "superconducting"
+              ? "#82b6f9"
+              : d.type === "trapped-ion"
+              ? "#ffc266"
+              : "#999"; 
+
+          const stroke =
+            d.type === "superconducting"
+              ? "#0d3d99"
+              : d.type === "trapped-ion"
+              ? "#cc6600"
+              : "#333"; 
 
           let delay = "0s";
           if (isVisible) {
@@ -144,64 +161,104 @@ function Plot({ showSuperconducting, showTrappedIon }) {
             }
           }
 
-          return d.type === "superconducting" ? (
-            <rect
-              key={i}
-              x={xScale(d.systemSize) - d.connectivityDensity * 3}
-              y={yScale(d.errorTolerance) - d.connectivityDensity * 3}
-              width={d.connectivityDensity * 6}
-              height={d.connectivityDensity * 6}
-              fill={fill}
-              stroke={stroke}
-              strokeWidth={1.5}
-              opacity={opacity}
-              style={{
-                transition: "opacity 0.8s ease",
-                transitionDelay: delay,
-                pointerEvents: isVisible ? "all" : "none",
-              }}
-              onMouseEnter={() => {
-                showTooltip({
-                  tooltipLeft: xScale(d.systemSize) + 40,
-                  tooltipTop: yScale(d.errorTolerance) + 50,
-                  tooltipData: d.year,
-                });
-              }}
-              onMouseLeave={() => {
-                hideTooltip();
-              }}
-            />
-          ) : (
-            <Circle
-              key={i}
-              cx={xScale(d.systemSize)}
-              cy={yScale(d.errorTolerance)}
-              r={d.connectivityDensity * 3}
-              fill={fill}
-              stroke={stroke}
-              strokeWidth={1.5}
-              opacity={opacity}
-              style={{
-                transition: "opacity 0.8s ease",
-                transitionDelay: delay,
-                pointerEvents: isVisible ? "all" : "none",
-              }}
-              onMouseEnter={() => {
-                showTooltip({
-                  tooltipLeft: xScale(d.systemSize) + 40,
-                  tooltipTop: yScale(d.errorTolerance) + 50,
-                  tooltipData: d.year,
-                });
-              }}
-              onMouseLeave={() => {
-                hideTooltip();
-              }}
-            />
-          );
+          if (d.type === "superconducting") {
+            return (
+              <rect
+                key={i}
+                x={xScale(d.systemSize) - d.connectivityDensity * 3}
+                y={yScale(d.errorTolerance) - d.connectivityDensity * 3}
+                width={d.connectivityDensity * 5}
+                height={d.connectivityDensity * 5}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth={1.5}
+                opacity={opacity}
+                style={{
+                  transition: "opacity 0.8s ease",
+                  transitionDelay: delay,
+                  pointerEvents: isVisible ? "all" : "none",
+                }}
+                onMouseEnter={() => {
+                  showTooltip({
+                    tooltipLeft: xScale(d.systemSize) + 40,
+                    tooltipTop: yScale(d.errorTolerance) + 100,
+                    tooltipData: d.year,
+                  });
+                }}
+                onMouseLeave={() => {
+                  hideTooltip();
+                }}
+              />
+            );
+          } else if (d.type === "trapped-ion") {
+            return (
+              <Circle
+                key={i}
+                cx={xScale(d.systemSize)}
+                cy={yScale(d.errorTolerance)}
+                r={d.connectivityDensity * 3}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth={1.5}
+                opacity={opacity}
+                style={{
+                  transition: "opacity 0.8s ease",
+                  transitionDelay: delay,
+                  pointerEvents: isVisible ? "all" : "none",
+                }}
+                onMouseEnter={() => {
+                  showTooltip({
+                    tooltipLeft: xScale(d.systemSize) + 40,
+                    tooltipTop: yScale(d.errorTolerance) + 100,
+                    tooltipData: d.year,
+                  });
+                }}
+                onMouseLeave={() => {
+                  hideTooltip();
+                }}
+              />
+            );
+          } else if (d.type === "algorithm") {
+            // Rotate rectangle for diamond shape
+            return (
+              <rect
+                key={i}
+                x={xScale(d.systemSize) - d.connectivityDensity * 3}
+                y={yScale(d.errorTolerance) - d.connectivityDensity * 3}
+                width={d.connectivityDensity * 6}
+                height={d.connectivityDensity * 6}
+                transform={`
+                  rotate(45 ${xScale(d.systemSize)} ${yScale(d.errorTolerance)})
+                `}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth={1.5}
+                opacity={opacity}
+                style={{
+                  transition: "opacity 0.8s ease",
+                  transitionDelay: delay,
+                  pointerEvents: isVisible ? "all" : "none",
+                }}
+                onMouseEnter={() => {
+                  showTooltip({
+                    tooltipLeft: xScale(d.systemSize) + 40,
+                    tooltipTop: yScale(d.errorTolerance) + 60,
+                    tooltipData: d.name,
+                  });
+                }}
+                onMouseLeave={() => {
+                  hideTooltip();
+                }}
+              />
+            );
+          } else {
+            return null; 
+          }
+          
         })}
 
         {/* Legend inside the plot */}
-        <Group top={plotHeight + 60} left={isMobile ? 170 : 280}>
+        <Group top={plotHeight + 50} left={isMobile ? 170 : 260}>
           <rect
             x={0}
             y={0}
@@ -214,7 +271,7 @@ function Plot({ showSuperconducting, showTrappedIon }) {
           <text x={20} y={10} fontSize={12} fill="#000">
             Superconducting
           </text>
-          
+
           <Circle
             cx={6}
             cy={25}
@@ -227,8 +284,9 @@ function Plot({ showSuperconducting, showTrappedIon }) {
             Trapped-ion
           </text>
         </Group>
-
       </Group>
+
+      {/* Tooltip */}
       {tooltipOpen && (
         <TooltipInPortal
           top={tooltipTop}

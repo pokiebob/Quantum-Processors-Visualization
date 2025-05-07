@@ -37,7 +37,7 @@
     {
       "type": "superconducting",
       "year": 2019,
-      "systemSize": 47,
+      "systemSize": 60,
       "errorTolerance": 0.0025,
       "connectivityDensity": 3
     },
@@ -124,6 +124,49 @@
       "systemSize": 100,
       "errorTolerance": 0.0005,
       "connectivityDensity": 5
+    },
+    {
+      "type": "algorithm",
+      "name": "Shor’s Algorithm (FT)",
+      "systemSize": 1000000,
+      "errorTolerance": 0.000002,
+      "connectivityDensity": 1
+    },
+    {
+      "type": "algorithm",
+      "name": "Grover’s Algorithm (FT)",
+      "systemSize": 200000,
+      "errorTolerance": 0.00003,
+      "connectivityDensity": 1
+    },
+    {
+      "type": "algorithm",
+      "name": "Quantum Simulation (FT)",
+      "systemSize": 30000,
+      "errorTolerance": 0.0001,
+      "connectivityDensity": 1
+    },
+    {
+      "type": "algorithm",
+      "name": "Quantum Optimizations (NISQ)",
+      "systemSize": 1000,
+      "errorTolerance": 0.001,
+      "connectivityDensity": 1
+    },
+    {
+      "type": "algorithm",
+      "name": "QEC (FT)",
+      "systemSize": 350,
+      "errorTolerance": 0.0045,
+      "connectivityDensity": 1
+    },
+    {
+      "type": "algorithm",
+      "name": "RCS (NISQ)",
+      "systemSize": 100,
+      "errorTolerance": 0.0025,
+      "connectivityDensity": 1
     }
+    
   ]
   

@@ -1,22 +1,38 @@
 import React from "react";
 import { Scrollama, Step } from "react-scrollama";
 
-function TextBox({ setShowSuperconducting, setShowTrappedIon }) {
+function TextBox({
+  setShowSuperconducting,
+  setShowTrappedIon,
+  setShowAlgorithm,
+}) {
+
+  /* Scrollama Logic */
   const handleStepEnter = ({ data }) => {
     if (data === "superconducting") {
       setShowSuperconducting(true);
+      setShowTrappedIon(false);
+      setShowAlgorithm(false);
     } else if (data === "trapped-ion") {
       setShowSuperconducting(true);
       setShowTrappedIon(true);
+      setShowAlgorithm(false);
+    } else if (data === "algorithm") {
+      setShowSuperconducting(true);
+      setShowTrappedIon(true);
+      setShowAlgorithm(true);
     }
   };
 
   const handleStepExit = ({ data, direction }) => {
-    if (data === "trapped-ion" && direction === "up") {
+    if (data === "algorithm" && direction === "up") {
+      setShowAlgorithm(false);
+    } else if (data === "trapped-ion" && direction === "up") {
       setShowTrappedIon(false);
     } else if (data === "superconducting" && direction === "up") {
       setShowSuperconducting(false);
       setShowTrappedIon(false);
+      setShowAlgorithm(false);
     }
   };
 
@@ -44,7 +60,8 @@ function TextBox({ setShowSuperconducting, setShowTrappedIon }) {
               devices with over 50 qubits. Encouragingly, current coherence
               times suggest the potential for exponential improvement, offering
               hope that superconducting technologies can keep pace with
-              Schoelkopf’s Law.
+              Schoelkopf’s Law (coherence times improve by a factor of 10
+              roughly every three years).
             </p>
           </div>
         </Step>
@@ -53,9 +70,10 @@ function TextBox({ setShowSuperconducting, setShowTrappedIon }) {
             <h2>Trapped-ion QPUs</h2>
             <p>
               Trapped-ion quantum processors use individual ions suspended in
-              electromagnetic fields to represent qubits. Quantum information is
+              electromagnetic fields to act as qubits. Quantum information is
               encoded in the internal electronic states of each ion, and laser
-              pulses manipulate these states to implement quantum gates.
+              pulses manipulate these states to implement quantum gates, or
+              operations on qubits.
             </p>
             <p>
               Trapped-ion qubits offer exceptional coherence times due to the
@@ -66,6 +84,44 @@ function TextBox({ setShowSuperconducting, setShowTrappedIon }) {
               trapped-ion systems as a leading candidate for achieving reliable
               quantum computation.
             </p>
+          </div>
+        </Step>
+        <Step data="algorithm">
+          <div style={{ minHeight: "100vh" }}>
+            <h2>The Algorithm–Hardware Gap</h2>
+            <p>
+              While quantum hardware has advanced rapidly, key quantum
+              algorithms still require far larger, lower-error processors than
+              what’s currently available.
+            </p>
+            <ul
+              style={{
+                marginLeft: "1rem",
+              }}
+            >
+              <li>
+                <strong>Shor’s Algorithm</strong>: Efficiently factors large
+                numbers, threatening classical encryption methods like RSA.
+              </li>
+              <br />
+              <li>
+                <strong>Grover’s Algorithm</strong>: Speeds up unstructured
+                search problems by providing quadratic improvement over
+                classical methods.
+              </li>
+              <br />
+              <li>
+                <strong>Quantum Simulation (Fault-Tolerant)</strong>: Models
+                complex molecules, materials, and physical systems beyond
+                classical capabilities.
+              </li>
+              <br />
+              <li>
+                <strong>Quantum Optimization (NISQ)</strong>: Tackles
+                combinatorial optimization problems using hybrid
+                quantum-classical approaches.
+              </li>
+            </ul>
           </div>
         </Step>
       </Scrollama>
