@@ -1,7 +1,7 @@
 # Quantum-Processors-Visualization
 
-## To Run on Local
-- Enter storytelling-app directory
+## To Run on Local (React App)
+- Enter storytelling-app directory 
 - Run npm start
 - View on local http://localhost:3000 or desired port
 
