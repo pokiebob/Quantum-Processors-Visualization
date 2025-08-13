@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Quantum-Processors-Visualization/static/css/main.7c18d058.css",
+    "main.js": "/Quantum-Processors-Visualization/static/js/main.7b25092b.js",
+    "static/js/453.afd19f23.chunk.js": "/Quantum-Processors-Visualization/static/js/453.afd19f23.chunk.js",
+    "index.html": "/Quantum-Processors-Visualization/index.html",
+    "main.7c18d058.css.map": "/Quantum-Processors-Visualization/static/css/main.7c18d058.css.map",
+    "main.7b25092b.js.map": "/Quantum-Processors-Visualization/static/js/main.7b25092b.js.map",
+    "453.afd19f23.chunk.js.map": "/Quantum-Processors-Visualization/static/js/453.afd19f23.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7c18d058.css",
+    "static/js/main.7b25092b.js"
+  ]
+}
